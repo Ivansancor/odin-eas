@@ -8,12 +8,35 @@
     height: 400px;
     width: 400px;
     margin: 100px auto;
+    border: 2px solid #000;
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-template-rows: repeat(4, auto);
 }
 
+#button-div {
+    margin: 100px auto;
+    height: 100px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+}
+
 .grid-div {
-    border: 1px solid black;
+    border: 1px solid #000;
     border-collapse: collapse;
+}
+
+button {
+    height: 50px;
+    width: 100px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #000;
+}
+button:hover {
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
 }
