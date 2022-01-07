@@ -12,17 +12,18 @@
         <div>
             <div id="user-input-div">
                 <label for="size"> Grid Size: </label>
-                <input type="range" id="size" min="1" max="80">
+                <input type="range" id="size" min="1" max="40">
             </div>
             <div id="grid-div"></div>
             <div id="buttons-div">
-                <button id="color-picker">
+                <div id="color-picker">
+                    <button type="button" id="color-btn">COLOR PICK MODE<br>(CLEAR)</button>
                     <input type="color" value="#000000">
-                    <span>COLOR</span>
+                </div>
                 </button>
-                <button type="button" id="grey-btn">GREYSCALE</button>
-                <button type="button" id="rainbow-btn">RAINBOW</button>
-                <button type="button" id="reset-btn">RESET</button>
+                <button type="button" id="grey-btn">GREYSCALE MODE<br>(CLEAR)</button>
+                <button type="button" id="rainbow-btn">RAINBOW MODE<br>(CLEAR)</button>
+                <button type="button" id="reset-btn">CLEAR AND RESET</button>
             </div>
         </div>
         <script src="script.js"></script>
