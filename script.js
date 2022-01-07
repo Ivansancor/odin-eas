@@ -1,30 +1,109 @@
-const parentdiv = document.getElementById('parent-div');
+const gridDiv = document.getElementById('grid-div');
+const inputDiv = document.getElementById('user-input-div');
+const btnDiv = document.getElementById('buttons-div');
+const inputEl = document.querySelector('input[type=range]');
 
-let sideSize = 4;
+const sizeDisplay = document.createElement('span');
+inputDiv.appendChild(sizeDisplay);
 
-for (let i = 0; i < sideSize*sideSize; i++){
-    let newdiv = document.createElement('div');
-    newdiv.classList.add('grid-div');
-    parentdiv.appendChild(newdiv);
+inputEl.addEventListener('input', sizeGrid);
+
+
+
+const colorBtn = document.getElementById('color-picker');
+const colorInput = document.querySelector('input[type=color]');
+
+const greyBtn = document.getElementById('grey-btn');
+const rainbowBtn = document.getElementById('rainbow-btn');
+const resetBtn = document.getElementById('reset-btn');
+
+
+
+const defSize = 10;
+let defColor = '#000000';
+const defActive = colorBtn;
+
+colorInput.addEventListener('input', changeColor);
+
+
+
+function reset(){
+    gridDiv.innerHTML = '';
+}
+
+function initialize(size){
+    sizeDisplay.textContent = `(${size} x ${size})`;
+    gridDiv.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    gridDiv.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    defActive.classList.add('active');
+
+    for (let i = 0; i < size*size; i++){
+        const newdiv = document.createElement('div');
+        newdiv.addEventListener('mouseenter', colorDiv);
+        gridDiv.appendChild(newdiv);
+    }
+}
+
+function sizeGrid(){
+    reset();
+    const newSize = inputEl.value;
+    initialize(newSize);
+}
+
+function changeColor(){
+    defColor = colorInput.value;
+}
+
+function colorDiv(e){
+    e.target.style.backgroundColor = defColor;
 }
 
 
-const newGrid = document.getElementsByClassName('grid-div');
+window.onload = () => {
+    colorInput.value = '#000';
+    inputEl.value = 10;
+}
+
+initialize(defSize);
+
+
+
+
+
+
+
+
+
+/*
+
+
+const gridDiv = document.getElementsByClassName('grid-div');
 for (let i = 0; i < sideSize*sideSize; i++){
-    newGrid[i].addEventListener('mouseenter', colorDiv);
+    gridDiv[i].addEventListener('mouseenter', colorDiv);
 }
 
 function colorDiv(e){
    for (let i = 0; i < sideSize*sideSize; i++){
-       if (e.target == newGrid[i]){
-           newGrid[i].style.backgroundColor = '#000';
-           newGrid[i].style.border = "1px solid #fff";
-           newGrid[i].removeEventListener('mouseenter', colorDiv);
-           newGrid[i].removeEventListener('mouseenter', colorGreyDiv);
-           newGrid[i].removeEventListener('mouseenter', colorRainbowDiv);
+       if (e.target == gridDiv[i]){
+           if (gridDiv[i].style.backgroundColor == ''){
+                gridDiv[i].style.backgroundColor = '#000';
+                gridDiv[i].style.border = "1px solid #fff";
+                gridDiv[i].addEventListener('mouseenter', colorDiv);
+                gridDiv[i].removeEventListener('mouseenter', colorGreyDiv);
+                gridDiv[i].removeEventListener('mouseenter', colorRainbowDiv);
+           }
+           else if (gridDiv[i].style.backgroundColor == '#000'){
+                gridDiv[i].style.backgroundColor = '#fff';
+                gridDiv[i].style.border = "1px solid #000";
+                gridDiv[i].addEventListener('mouseenter', colorDiv);
+                gridDiv[i].removeEventListener('mouseenter', colorGreyDiv);
+                gridDiv[i].removeEventListener('mouseenter', colorRainbowDiv);
+           }
        }
    }
 }
+
+
 
 const buttonDiv = document.getElementById('button-div');
 const restartBtn = document.createElement('button');
@@ -45,20 +124,20 @@ rainbowBtn.addEventListener('click', rainbowGrid);
 
 function greyGrid(){
     for (let i = 0; i < sideSize*sideSize; i++){
-        newGrid[i].style.backgroundColor = "#fff";
-        newGrid[i].style.border = "1px solid #000";
-        newGrid[i].addEventListener('mouseenter', colorGreyDiv);
-        newGrid[i].removeEventListener('mouseenter', colorDiv);
-        newGrid[i].removeEventListener('mouseenter', colorRainbowDiv);
+        gridDiv[i].style.backgroundColor = "#fff";
+        gridDiv[i].style.border = "1px solid #000";
+        gridDiv[i].addEventListener('mouseenter', colorGreyDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorRainbowDiv);
     }
 }
 function colorGreyDiv(e){
     // let counter = 0;
     // let light = 90;
     // for (let i = 0; i < sideSize*sideSize; i++){
-    //     if (e.target == newGrid[i]){
-    //         newGrid[i].style.backgroundColor = `hsl(0, 0%, ${light}%)`;
-    //         newGrid[i].style.border = "1px solid #000";
+    //     if (e.target == gridDiv[i]){
+    //         gridDiv[i].style.backgroundColor = `hsl(0, 0%, ${light}%)`;
+    //         gridDiv[i].style.border = "1px solid #000";
     //     }
     //     light = light - 10;
     //     counter++;
@@ -71,10 +150,13 @@ function colorGreyDiv(e){
     for (let counter = 0; counter < sideSize*sideSize; counter++){
         
         for (let i = 0; i < counter; i++){
-            if (e.target == newGrid[i]){
-                newGrid[i].style.backgroundColor = `hsl(0, 0%, ${light}%)`;
-                newGrid[i].style.border = "1px solid #000";
+            if (e.target == gridDiv[i]){
+                gridDiv[i].style.backgroundColor = `hsl(0, 0%, ${light}%)`;
+                gridDiv[i].style.border = "1px solid #000";
                 light = light - 10;
+                if (counter == 10){
+                    counter = 0;
+                }
             }
         }
     }
@@ -82,41 +164,42 @@ function colorGreyDiv(e){
 
 function rainbowGrid(){
     for (let i = 0; i < sideSize*sideSize; i++){
-        newGrid[i].style.backgroundColor = "#fff";
-        newGrid[i].style.border = "1px solid #000";
-        newGrid[i].addEventListener('mouseenter', colorRainbowDiv);
-        newGrid[i].removeEventListener('mouseenter', colorDiv);
-        newGrid[i].removeEventListener('mouseenter', colorGreyDiv);
+        gridDiv[i].style.backgroundColor = "#fff";
+        gridDiv[i].style.border = "1px solid #000";
+        gridDiv[i].addEventListener('mouseenter', colorRainbowDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorGreyDiv);
     }
 }
 
 function colorRainbowDiv(e){
     for (let i = 0; i < sideSize*sideSize; i++){
-        if (e.target == newGrid[i]){
+        if (e.target == gridDiv[i]){
             let randNum = Math.floor(Math.random()*2**24).toString(16).padStart(6, "0");
-            newGrid[i].style.backgroundColor = `#${randNum}`;
-            newGrid[i].style.border = "1px solid #000";
+            gridDiv[i].style.backgroundColor = `#${randNum}`;
+            gridDiv[i].style.border = "1px solid #000";
         }
     }
  }
 
 function restartGrid(){
     for (let i = 0; i < sideSize*sideSize; i++){
-        newGrid[i].style.backgroundColor = "#fff";
-        newGrid[i].style.border = "1px solid #000";
-        newGrid[i].addEventListener('mouseenter', colorDiv);
-        newGrid[i].removeEventListener('mouseenter', colorGreyDiv);
-        newGrid[i].removeEventListener('mouseenter', colorRainbowDiv);
+        gridDiv[i].style.backgroundColor = "#fff";
+        gridDiv[i].style.border = "1px solid #000";
+        gridDiv[i].addEventListener('mouseenter', colorDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorGreyDiv);
+        gridDiv[i].removeEventListener('mouseenter', colorRainbowDiv);
     }
 }
+*/
 
     // newSideSize = prompt("Insert size of new grid:");
-    // parentdiv.style.gridTemplateColumns = `repeat(${newSideSize}, auto)`;
-    // parentdiv.style.gridTemplateRows = `repeat(${newSideSize}, auto)`;
+    // gridDiv.style.gridTemplateColumns = `repeat(${newSideSize}, auto)`;
+    // gridDiv.style.gridTemplateRows = `repeat(${newSideSize}, auto)`;
 
     // for (let i = 0; i < newSideSize*newSideSize; i++){
-    //     parentdiv.removeChild(newdiv);
+    //     gridDiv.removeChild(newdiv);
     //     let newdiv = document.createElement('div');
     //     newdiv.classList.add('grid-div');
-    //     parentdiv.appendChild(newdiv);
+    //     gridDiv.appendChild(newdiv);
     // }
